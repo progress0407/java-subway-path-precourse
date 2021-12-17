@@ -38,9 +38,14 @@ public class RelationController {
 	}
 
 	public void choiceMenu() {
-		MoveDto moveDto = InputView.getMainChoice();
-		ResultDto resultDto = process(moveDto);
-		OutputView.printResult(resultDto);
+		while (true) {
+			MoveDto moveDto = InputView.getMainChoice();
+			if (moveDto == null) {
+				return;
+			}
+			ResultDto resultDto = process(moveDto);
+			OutputView.printResult(resultDto);
+		}
 	}
 
 	public ResultDto process(MoveDto moveDto) {
