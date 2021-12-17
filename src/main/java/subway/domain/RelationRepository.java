@@ -2,6 +2,7 @@ package subway.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,7 +75,16 @@ public class RelationRepository {
 		GraphPath graphPath = shortestPath.getPath(new Station(sourceStationName), new Station(targetStationName));
 		int distanceWeight = (int)graphPath.getWeight();
 		int timeWeight = (int)getNormalTimeWeight(graphPath);
-		return new ResultDto(distanceWeight, timeWeight);
+		List<String> stationNames = getStationNames(graphPath);
+		return new ResultDto(distanceWeight, timeWeight, stationNames);
+	}
+
+	private static List<String> getStationNames(GraphPath graphPath) {
+		List<String> stationNames = new LinkedList<>();
+		for (Object vertex : graphPath.getVertexList()) {
+			stationNames.add(vertex.toString());
+		}
+		return stationNames;
 	}
 
 	private static double getNormalTimeWeight(GraphPath graphPath) {
@@ -100,7 +110,8 @@ public class RelationRepository {
 		GraphPath graphPath = shortestPath.getPath(new Station(sourceStationName), new Station(targetStationName));
 		int distanceWeight = (int)getNormalDistanceWeight(graphPath);
 		int timeWeight = (int)graphPath.getWeight();
-		return new ResultDto(distanceWeight, timeWeight);
+		List<String> stationNames = getStationNames(graphPath);
+		return new ResultDto(distanceWeight, timeWeight, stationNames);
 	}
 
 	private static double getNormalDistanceWeight(GraphPath graphPath) {

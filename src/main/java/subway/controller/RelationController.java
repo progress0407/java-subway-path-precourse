@@ -58,6 +58,10 @@ public class RelationController {
 	}
 
 	public static ResultDto getShortestTime(MoveDto moveDto) {
-		return null;
+		String sourceStationName = moveDto.getSourceStationName();
+		String targetStationName = moveDto.getTargetStationName();
+		ResultDto resultDto = RelationRepository.getResultByShortestTime(sourceStationName,
+			targetStationName);
+		return resultDto;
 	}
 }

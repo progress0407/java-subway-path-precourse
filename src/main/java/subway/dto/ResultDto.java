@@ -1,28 +1,28 @@
 package subway.dto;
 
+import java.util.List;
+
 public class ResultDto {
 	private int shortestDistance;
 	private int shortestTime;
+	private List<String> stationNames;
 
-	public ResultDto(int shortestDistance, int shortestTime) {
+	public ResultDto(int shortestDistance, int shortestTime, List<String> stationNames) {
 		this.shortestDistance = shortestDistance;
 		this.shortestTime = shortestTime;
+		this.stationNames = stationNames;
 	}
 
 	public int getShortestDistance() {
 		return shortestDistance;
 	}
 
-	public void setShortestDistance(int shortestDistance) {
-		this.shortestDistance = shortestDistance;
-	}
-
 	public int getShortestTime() {
 		return shortestTime;
 	}
 
-	public void setShortestTime(int shortestTime) {
-		this.shortestTime = shortestTime;
+	public List<String> getStationNames() {
+		return stationNames;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package subway.view;
 
+import java.util.List;
+
 import subway.dto.MoveDto;
 import subway.dto.ResultDto;
 
@@ -22,10 +24,22 @@ public class OutputView {
 	 * [INFO] 양재역
 	 */
 	public static void printResult(ResultDto resultDto) {
+		printSummary(resultDto);
+		printStationList(resultDto);
+	}
+
+	private static void printSummary(ResultDto resultDto) {
 		System.out.println(OUTPUT_RESULT);
 		System.out.println(INFO_LINE);
 		System.out.printf(OUTPUT_DISTANCE, resultDto.getShortestDistance());
 		System.out.printf(OUTPUT_TIME, resultDto.getShortestTime());
 		System.out.println(INFO_LINE);
+	}
+
+	private static void printStationList(ResultDto resultDto) {
+		List<String> stationNames = resultDto.getStationNames();
+		for (String stationName : stationNames) {
+			System.out.println(INFO_PREFIX_MESSAGE + stationName);
+		}
 	}
 }
