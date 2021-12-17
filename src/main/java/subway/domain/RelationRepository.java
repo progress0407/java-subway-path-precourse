@@ -14,9 +14,10 @@ import subway.dto.ResultDto;
 
 public class RelationRepository {
 	private static final List<Relation> relations = new ArrayList<>();
-	private static final WeightedMultigraph<Station, DefaultWeightedEdge> distanceGraph = new WeightedMultigraph(DefaultWeightedEdge.class);
-	private static final WeightedMultigraph<Station, DefaultWeightedEdge> timeGraph = new WeightedMultigraph(DefaultWeightedEdge.class);
-
+	private static final WeightedMultigraph<Station, DefaultWeightedEdge> distanceGraph = new WeightedMultigraph(
+		DefaultWeightedEdge.class);
+	private static final WeightedMultigraph<Station, DefaultWeightedEdge> timeGraph = new WeightedMultigraph(
+		DefaultWeightedEdge.class);
 
 	public static List<Relation> relations() {
 		return Collections.unmodifiableList(relations);
@@ -52,7 +53,7 @@ public class RelationRepository {
 				String stationAnotherName = relation.getStationAnother().getName();
 				boolean result = (Objects.equals(stationName, nameOne) && Objects.equals(stationAnotherName, nameAnother))
 					|| (Objects.equals(stationName, nameAnother) && Objects.equals(stationAnotherName, nameOne));
-			return result;
+				return result;
 			}
 		);
 	}
@@ -71,8 +72,8 @@ public class RelationRepository {
 	public static ResultDto getResultByShortestDistance(String sourceStationName, String targetStationName) {
 		DijkstraShortestPath shortestPath = new DijkstraShortestPath(distanceGraph);
 		GraphPath graphPath = shortestPath.getPath(new Station(sourceStationName), new Station(targetStationName));
-		int distanceWeight = (int) graphPath.getWeight();
-		int timeWeight = (int) getNormalTimeWeight(graphPath);
+		int distanceWeight = (int)graphPath.getWeight();
+		int timeWeight = (int)getNormalTimeWeight(graphPath);
 		return new ResultDto(distanceWeight, timeWeight);
 	}
 
@@ -80,13 +81,36 @@ public class RelationRepository {
 		int resultTime = 0;
 		List edgeList = graphPath.getEdgeList();
 		for (Object edge : edgeList) {
-			String[] strings = edge.toString().trim().replaceAll("[()]", "").split(" : ");
-			String one = strings[0];
-			String another = strings[1];
-			Relation relation = findByNames(one, another);
+			Relation relation = getRelation(edge);
 			resultTime += relation.getTime();
 		}
 		return resultTime;
+	}
+
+	private static Relation getRelation(Object edge) {
+		String[] strings = edge.toString().trim().replaceAll("[()]", "").split(" : ");
+		String one = strings[0];
+		String another = strings[1];
+		Relation relation = findByNames(one, another);
+		return relation;
+	}
+
+	public static ResultDto getResultByShortestTime(String sourceStationName, String targetStationName) {
+		DijkstraShortestPath shortestPath = new DijkstraShortestPath(timeGraph);
+		GraphPath graphPath = shortestPath.getPath(new Station(sourceStationName), new Station(targetStationName));
+		int distanceWeight = (int)getNormalDistanceWeight(graphPath);
+		int timeWeight = (int)graphPath.getWeight();
+		return new ResultDto(distanceWeight, timeWeight);
+	}
+
+	private static double getNormalDistanceWeight(GraphPath graphPath) {
+		int resultDistance = 0;
+		List edgeList = graphPath.getEdgeList();
+		for (Object edge : edgeList) {
+			Relation relation = getRelation(edge);
+			resultDistance += relation.getDistance();
+		}
+		return resultDistance;
 	}
 
 }
