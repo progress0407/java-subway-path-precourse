@@ -12,6 +12,7 @@ public class Application {
     private static StationController stationController;
     private static RelationController relationController;
 
+
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         init();
@@ -19,7 +20,7 @@ public class Application {
     }
 
     private static void run() {
-
+        relationController.choiceMenu();
     }
 
     private static void init() {

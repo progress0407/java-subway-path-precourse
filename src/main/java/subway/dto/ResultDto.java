@@ -24,4 +24,12 @@ public class ResultDto {
 	public void setShortestTime(int shortestTime) {
 		this.shortestTime = shortestTime;
 	}
+
+	@Override
+	public String toString() {
+		return "ResultDto{" +
+			"shortestDistance=" + shortestDistance +
+			", shortestTime=" + shortestTime +
+			'}';
+	}
 }

@@ -81,14 +81,12 @@ public class RelationRepository {
 		List edgeList = graphPath.getEdgeList();
 		for (Object edge : edgeList) {
 			String[] strings = edge.toString().trim().replaceAll("[()]", "").split(" : ");
-			String one = getNameReplaced(strings[0]);
-			String another = getNameReplaced(strings[1]);
+			String one = strings[0];
+			String another = strings[1];
 			Relation relation = findByNames(one, another);
+			resultTime += relation.getTime();
 		}
 		return resultTime;
 	}
 
-	private static String getNameReplaced(String one) {
-		return one.replaceAll("Station\\{name\\=\\'", "").replaceAll("\\'\\}", "");
-	}
 }
